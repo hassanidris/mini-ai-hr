@@ -23,7 +23,10 @@ const AuthForm = ({ type }: Props) => {
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (formData: FormData) => {
-    console.log("Form submitted");
+    startTransition(async () => {
+      console.log("Form submitted");
+      // TODO: auth request + toast/router handling
+    });
   };
   return (
     <form action={handleSubmit}>
@@ -58,7 +61,7 @@ const AuthForm = ({ type }: Props) => {
         </div>
       </CardContent>
       <CardFooter className="mt-4 flex flex-col gap-4 border-none bg-transparent">
-        <Button className="w-full">
+        <Button className="w-full" disabled={isPending}>
           {isPending ? (
             <Loader2 className="animate-spin" />
           ) : isLogin ? (

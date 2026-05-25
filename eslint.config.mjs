@@ -7,7 +7,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     rules: {
-      "react/no-unscaped-entities": "off",
+      "react/no-unescaped-entities": "off",
     },
   },
   // Override default ignores of eslint-config-next.
