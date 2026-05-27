@@ -22,18 +22,11 @@ async function Header() {
         <h1 className="flex flex-col text-2xl font-semibold">Mini AI HR</h1>
       </Link>
       <div className="flex gap-4">
-        {user ? (
-          <LogOutButton />
-        ) : (
-          <>
-            {/* <Button asChild className="hidden sm:block">
-              <Link href="/sign-up">Sign Up</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/login">Login</Link>
-            </Button> */}
-          </>
-        )}
+        {
+          user ? (
+            <LogOutButton />
+          ) : null /* TODO: add login/signup buttons here when not authenticated */
+        }
         <DarkModeToggle />
       </div>
     </header>

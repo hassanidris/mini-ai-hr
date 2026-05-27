@@ -29,7 +29,7 @@ export const logOutAction = async () => {
 
     return { errorMessage: null };
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Logout error:", error);
     return handleError(error);
   }
 };

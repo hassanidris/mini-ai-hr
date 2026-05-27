@@ -33,14 +33,25 @@ const AuthForm = ({ type }: Props) => {
       let title;
       let description;
 
-      if (isLogin) {
-        errorMessage = (await loginAction(email, password)).errorMessage;
-        title = "Logged in";
-        description = "You have successfully logged in.";
-      } else {
-        errorMessage = (await signUpAction(email, password)).errorMessage;
-        title = "Signed up";
-        description = "Check your email for a confirmation link.";
+      try {
+        if (isLogin) {
+          errorMessage = (await loginAction(email, password)).errorMessage;
+          title = "Logged in";
+          description = "You have successfully logged in.";
+        } else {
+          errorMessage = (await signUpAction(email, password)).errorMessage;
+          title = "Signed up";
+          description = "Check your email for a confirmation link.";
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description:
+            error instanceof Error
+              ? error.message
+              : "An unexpected error occurred",
+        });
+        return;
       }
 
       if (!errorMessage) {
