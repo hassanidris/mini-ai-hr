@@ -9,6 +9,8 @@ import { useTransition } from "react";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { login, signup } from "@/app/actions/auth";
+import { loginAction, signUpAction } from "@/actions/users";
 
 type Props = {
   type: "login" | "signUp";
@@ -24,8 +26,49 @@ const AuthForm = ({ type }: Props) => {
 
   const handleSubmit = (formData: FormData) => {
     startTransition(async () => {
-      console.log("Form submitted");
-      // TODO: auth request + toast/router handling
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
+
+      let errorMessage;
+      let title;
+      let description;
+
+      try {
+        if (isLogin) {
+          errorMessage = (await loginAction(email, password)).errorMessage;
+          title = "Logged in";
+          description = "You have successfully logged in.";
+        } else {
+          errorMessage = (await signUpAction(email, password)).errorMessage;
+          title = "Signed up";
+          description = "Check your email for a confirmation link.";
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description:
+            error instanceof Error
+              ? error.message
+              : "An unexpected error occurred",
+        });
+        return;
+      }
+
+      if (!errorMessage) {
+        toast({
+          title,
+          description,
+        });
+        // Only redirect on login, not on signup (requires email confirmation)
+        if (isLogin) {
+          router.replace("/dashboard");
+        }
+      } else {
+        toast({
+          title: "Error",
+          description: errorMessage,
+        });
+      }
     });
   };
   return (

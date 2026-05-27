@@ -1,4 +1,5 @@
 "use client";
+import { logOutAction } from "@/actions/users";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -12,9 +13,7 @@ const LogOutButton = () => {
   const handleLogOut = async () => {
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const errorMessage = null;
+    const { errorMessage } = await logOutAction();
 
     if (!errorMessage) {
       toast.success("Logged out", {
