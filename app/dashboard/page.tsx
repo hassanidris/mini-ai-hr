@@ -134,6 +134,7 @@ export default async function DashboardPage() {
   const user = await getUser();
   if (!user) redirect("/");
 
+  let fetchFailed = false;
   let stats = { total: 0, active: 0, inactive: 0, departments: 0 };
   let recentEmployees: Array<{
     id: string;
@@ -172,13 +173,13 @@ export default async function DashboardPage() {
     };
     recentEmployees = recent;
   } catch (err) {
+    fetchFailed = true;
     console.error("[DashboardPage] failed to fetch employee data:", err);
   }
 
-  // Fallback to demo data when DB is empty / not yet connected
-  const displayStats = stats.total === 0 ? DEMO_STATS : stats;
-  const displayEmployees =
-    recentEmployees.length === 0 ? DEMO_EMPLOYEES : recentEmployees;
+  // Fallback to demo data only when the fetch itself failed
+  const displayStats = fetchFailed ? DEMO_STATS : stats;
+  const displayEmployees = fetchFailed ? DEMO_EMPLOYEES : recentEmployees;
 
   const statCards = [
     {
@@ -307,7 +308,10 @@ export default async function DashboardPage() {
                       {formatDate(emp.joiningDate)}
                     </td>
                     <td className="px-6 py-3">
-                      <button className="text-muted-foreground hover:text-foreground rounded p-1 transition-colors">
+                      <button
+                        aria-label="More options"
+                        className="text-muted-foreground hover:text-foreground rounded p-1 transition-colors"
+                      >
                         <MoreVertical className="h-4 w-4" />
                       </button>
                     </td>
