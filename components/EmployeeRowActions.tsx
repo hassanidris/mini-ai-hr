@@ -17,7 +17,7 @@ import { EmployeeStatus } from "@/db/generated/enums";
 type Props = {
   employeeId: string;
   employeeName: string;
-  status: string;
+  status: EmployeeStatus;
 };
 
 export default function EmployeeRowActions({
@@ -28,10 +28,12 @@ export default function EmployeeRowActions({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const isActive = status === "ACTIVE";
+  const isActive = status === EmployeeStatus.ACTIVE;
 
   function handleToggleStatus() {
-    const newStatus = isActive ? EmployeeStatus.INACTIVE : EmployeeStatus.ACTIVE;
+    const newStatus = isActive
+      ? EmployeeStatus.INACTIVE
+      : EmployeeStatus.ACTIVE;
     const label = isActive ? "Deactivate" : "Activate";
     const confirmed = window.confirm(`${label} ${employeeName}?`);
     if (!confirmed) return;
@@ -70,9 +72,7 @@ export default function EmployeeRowActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() =>
-            router.push(`/dashboard/employees/${employeeId}/edit`)
-          }
+          onClick={() => router.push(`/dashboard/employees/${employeeId}/edit`)}
         >
           <Pencil />
           Edit

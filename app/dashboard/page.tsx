@@ -6,6 +6,7 @@ import { Users, CheckCircle2, UserX, Building2, Bot, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import EmployeeRowActions from "@/components/EmployeeRowActions";
+import { EmployeeStatus } from "@/db/generated/enums";
 import {
   Card,
   CardContent,
@@ -60,7 +61,7 @@ const DEMO_EMPLOYEES = [
     name: "John Doe",
     department: "Engineering",
     jobTitle: "Software Engineer",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-06-01"),
   },
   {
@@ -68,7 +69,7 @@ const DEMO_EMPLOYEES = [
     name: "Emma Johnson",
     department: "Product",
     jobTitle: "Product Manager",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-05-28"),
   },
   {
@@ -76,7 +77,7 @@ const DEMO_EMPLOYEES = [
     name: "Michael Brown",
     department: "Design",
     jobTitle: "UI/UX Designer",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-05-25"),
   },
   {
@@ -84,7 +85,7 @@ const DEMO_EMPLOYEES = [
     name: "Olivia Smith",
     department: "Marketing",
     jobTitle: "Marketing Specialist",
-    status: "INACTIVE",
+    status: EmployeeStatus.INACTIVE,
     joiningDate: new Date("2026-05-20"),
   },
   {
@@ -92,7 +93,7 @@ const DEMO_EMPLOYEES = [
     name: "Liam Wilson",
     department: "Sales",
     jobTitle: "Sales Executive",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-05-18"),
   },
 ];
@@ -109,7 +110,7 @@ export default async function DashboardPage() {
     name: string;
     department: string;
     jobTitle: string;
-    status: string;
+    status: EmployeeStatus;
     joiningDate: Date;
   }> = [];
 
