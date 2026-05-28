@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "migrate": "npx prisma generate && env $(cat .env.local | xargs) npx prisma migrate dev"
+    "migrate": "set -a && . ./.env.local && set +a && npx prisma generate && npx prisma migrate dev"
   },
   "prisma": {
     "schema": "db/schema.prisma"
