@@ -200,6 +200,24 @@ export async function deactivateEmployee(id: string) {
   }
 }
 
+export async function setEmployeeStatus(id: string, status: EmployeeStatus) {
+  try {
+    await requireAuth();
+    const employee = await prisma.employee.update({
+      where: { id },
+      data: { status },
+    });
+
+    revalidatePath("/dashboard/employees");
+    revalidatePath(`/dashboard/employees/${id}`);
+    revalidatePath("/dashboard");
+    return { data: employee, errorMessage: null };
+  } catch (error) {
+    console.error("[setEmployeeStatus]", error);
+    return { data: null, ...handleError(error) };
+  }
+}
+
 export async function getEmployeeStats() {
   try {
     await requireAuth();

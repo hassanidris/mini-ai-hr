@@ -2,17 +2,17 @@ import { getUser } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/db/prisma";
 import Link from "next/link";
-import {
-  Users,
-  CheckCircle2,
-  UserX,
-  Building2,
-  Bot,
-  MoreVertical,
-  Send,
-} from "lucide-react";
+import { Users, CheckCircle2, UserX, Building2, Bot, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import EmployeeRowActions from "@/components/EmployeeRowActions";
+import { EmployeeStatus } from "@/db/generated/enums";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardFooter,
+} from "@/components/ui/card";
 
 function getInitials(name: string) {
   return name
@@ -61,7 +61,7 @@ const DEMO_EMPLOYEES = [
     name: "John Doe",
     department: "Engineering",
     jobTitle: "Software Engineer",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-06-01"),
   },
   {
@@ -69,7 +69,7 @@ const DEMO_EMPLOYEES = [
     name: "Emma Johnson",
     department: "Product",
     jobTitle: "Product Manager",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-05-28"),
   },
   {
@@ -77,7 +77,7 @@ const DEMO_EMPLOYEES = [
     name: "Michael Brown",
     department: "Design",
     jobTitle: "UI/UX Designer",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-05-25"),
   },
   {
@@ -85,7 +85,7 @@ const DEMO_EMPLOYEES = [
     name: "Olivia Smith",
     department: "Marketing",
     jobTitle: "Marketing Specialist",
-    status: "INACTIVE",
+    status: EmployeeStatus.INACTIVE,
     joiningDate: new Date("2026-05-20"),
   },
   {
@@ -93,7 +93,7 @@ const DEMO_EMPLOYEES = [
     name: "Liam Wilson",
     department: "Sales",
     jobTitle: "Sales Executive",
-    status: "ACTIVE",
+    status: EmployeeStatus.ACTIVE,
     joiningDate: new Date("2026-05-18"),
   },
 ];
@@ -110,7 +110,7 @@ export default async function DashboardPage() {
     name: string;
     department: string;
     jobTitle: string;
-    status: string;
+    status: EmployeeStatus;
     joiningDate: Date;
   }> = [];
 
@@ -196,9 +196,9 @@ export default async function DashboardPage() {
         {/* Stat cards */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {statCards.map(({ label, value, icon: Icon, iconBg, iconColor }) => (
-            <div
+            <Card
               key={label}
-              className="bg-card flex items-center justify-between rounded-xl border p-5 shadow-sm"
+              className="flex-row items-center justify-between gap-0 p-5"
             >
               <div>
                 <p className="text-muted-foreground text-xs font-medium">
@@ -209,13 +209,13 @@ export default async function DashboardPage() {
               <div className={cn("rounded-full p-3", iconBg)}>
                 <Icon className={cn("h-5 w-5", iconColor)} />
               </div>
-            </div>
+            </Card>
           ))}
         </div>
 
         {/* Recent Employees */}
-        <div className="bg-card rounded-xl border shadow-sm">
-          <div className="flex items-center justify-between border-b px-6 py-4">
+        <Card className="gap-0 py-0">
+          <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
             <h2 className="font-semibold">Recent Employees</h2>
             <Link
               href="/dashboard/employees"
@@ -223,8 +223,8 @@ export default async function DashboardPage() {
             >
               View all
             </Link>
-          </div>
-          <div className="overflow-x-auto">
+          </CardHeader>
+          <CardContent className="overflow-x-auto p-0">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-muted-foreground border-b text-xs">
@@ -279,19 +279,18 @@ export default async function DashboardPage() {
                       {formatDate(emp.joiningDate)}
                     </td>
                     <td className="px-6 py-3">
-                      <button
-                        aria-label="More options"
-                        className="text-muted-foreground hover:text-foreground rounded p-1 transition-colors"
-                      >
-                        <MoreVertical className="h-4 w-4" />
-                      </button>
+                      <EmployeeRowActions
+                        employeeId={emp.id}
+                        employeeName={emp.name}
+                        status={emp.status}
+                      />
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Footer */}
         <div className="flex-1" />
@@ -301,17 +300,17 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── AI Assistant panel ── */}
-      <div className="bg-card flex w-80 shrink-0 flex-col rounded-xl border shadow-sm">
-        <div className="flex items-center gap-2 border-b px-4 py-3">
+      <Card className="w-80 shrink-0 gap-0 py-0">
+        <CardHeader className="flex flex-row items-center gap-2 border-b px-4 py-3">
           <Bot className="text-primary h-5 w-5" />
           <h2 className="font-semibold">AI Assistant</h2>
-        </div>
-        <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
+        </CardHeader>
+        <CardContent className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
           <p className="text-muted-foreground mt-8 text-center text-xs">
             Ask me anything about your employees or HR tasks.
           </p>
-        </div>
-        <div className="border-t p-3">
+        </CardContent>
+        <CardFooter className="flex-col items-start p-3">
           <div className="mb-2 flex flex-wrap gap-1.5">
             {AI_CHIPS.map((chip) => (
               <button
@@ -332,8 +331,8 @@ export default async function DashboardPage() {
               <Send className="h-4 w-4" />
             </button>
           </div>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
