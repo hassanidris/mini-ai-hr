@@ -20,12 +20,17 @@ export default function DeactivateButton({ employeeId, employeeName }: Props) {
     if (!confirmed) return;
 
     startTransition(async () => {
-      const { errorMessage } = await deactivateEmployee(employeeId);
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        toast.success(`${employeeName} has been deactivated.`);
-        router.refresh();
+      try {
+        const { errorMessage } = await deactivateEmployee(employeeId);
+        if (errorMessage) {
+          toast.error(errorMessage);
+        } else {
+          toast.success(`${employeeName} has been deactivated.`);
+          router.refresh();
+        }
+      } catch (error) {
+        console.error("[DeactivateButton]", error);
+        toast.error("An unexpected error occurred. Please try again.");
       }
     });
   }

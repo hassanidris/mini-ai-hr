@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   LayoutDashboard,
   Users,
@@ -23,10 +23,25 @@ const navItems = [
 export default function Sidebar() {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const userToggledRef = useRef(false);
+  const prevWasNarrowRef = useRef<boolean | null>(null);
 
   useEffect(() => {
     function handleResize() {
-      setIsCollapsed(window.innerWidth < 1024);
+      const isNarrow = window.innerWidth < 1024;
+      const prev = prevWasNarrowRef.current;
+
+      if (prev === null) {
+        setIsCollapsed(isNarrow);
+        prevWasNarrowRef.current = isNarrow;
+        return;
+      }
+
+      if (prev !== isNarrow) {
+        userToggledRef.current = false;
+        setIsCollapsed(isNarrow);
+        prevWasNarrowRef.current = isNarrow;
+      }
     }
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -42,7 +57,10 @@ export default function Sidebar() {
     >
       {/* Toggle button */}
       <button
-        onClick={() => setIsCollapsed((c) => !c)}
+        onClick={() => {
+          userToggledRef.current = true;
+          setIsCollapsed((c) => !c);
+        }}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         className="bg-sidebar border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent absolute top-5 -right-3 z-10 flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors"
       >

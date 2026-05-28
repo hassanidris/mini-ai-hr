@@ -26,15 +26,17 @@ const EMPLOYMENT_OPTIONS: { value: EmploymentType; label: string }[] = [
 ];
 
 function Field({
+  id,
   label,
   children,
 }: {
+  id: string;
   label: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <Label>{label}</Label>
+      <Label htmlFor={id}>{label}</Label>
       {children}
     </div>
   );
@@ -97,16 +99,18 @@ export default function EditEmployeeForm({ employee }: Props) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           {/* Name + Email */}
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Full Name">
+            <Field id="name" label="Full Name">
               <Input
+                id="name"
                 name="name"
                 type="text"
                 required
                 defaultValue={employee.name}
               />
             </Field>
-            <Field label="Email Address">
+            <Field id="email" label="Email Address">
               <Input
+                id="email"
                 name="email"
                 type="email"
                 required
@@ -117,16 +121,18 @@ export default function EditEmployeeForm({ employee }: Props) {
 
           {/* Job Title + Department */}
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Job Title">
+            <Field id="jobTitle" label="Job Title">
               <Input
+                id="jobTitle"
                 name="jobTitle"
                 type="text"
                 required
                 defaultValue={employee.jobTitle}
               />
             </Field>
-            <Field label="Department">
+            <Field id="department" label="Department">
               <Input
+                id="department"
                 name="department"
                 type="text"
                 required
@@ -137,12 +143,12 @@ export default function EditEmployeeForm({ employee }: Props) {
 
           {/* Employment Type + Joining Date */}
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Employment Type">
+            <Field id="employmentType" label="Employment Type">
               <Select
                 value={employmentType}
                 onValueChange={(v) => setEmploymentType(v as EmploymentType)}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger id="employmentType" className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -154,8 +160,9 @@ export default function EditEmployeeForm({ employee }: Props) {
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="Joining Date">
+            <Field id="joiningDate" label="Joining Date">
               <Input
+                id="joiningDate"
                 name="joiningDate"
                 type="date"
                 required
