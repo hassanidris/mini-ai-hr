@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, Bot, UserPlus } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  LayoutDashboard,
+  Users,
+  Bot,
+  UserPlus,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -14,10 +22,56 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const userToggledRef = useRef(false);
+  const prevWasNarrowRef = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    function handleResize() {
+      const isNarrow = window.innerWidth < 1024;
+      const prev = prevWasNarrowRef.current;
+
+      if (prev === null) {
+        setIsCollapsed(isNarrow);
+        prevWasNarrowRef.current = isNarrow;
+        return;
+      }
+
+      if (prev !== isNarrow) {
+        userToggledRef.current = false;
+        setIsCollapsed(isNarrow);
+        prevWasNarrowRef.current = isNarrow;
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <aside className="bg-sidebar text-sidebar-foreground border-sidebar-border flex w-64 shrink-0 flex-col border-r">
-      <nav className="flex flex-1 flex-col gap-1 p-4">
+    <aside
+      className={cn(
+        "bg-sidebar text-sidebar-foreground border-sidebar-border relative flex shrink-0 flex-col border-r transition-all duration-200",
+        isCollapsed ? "w-14" : "w-64",
+      )}
+    >
+      {/* Toggle button */}
+      <button
+        onClick={() => {
+          userToggledRef.current = true;
+          setIsCollapsed((c) => !c);
+        }}
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        className="bg-sidebar border-sidebar-border text-sidebar-foreground hover:bg-sidebar-accent absolute top-5 -right-3 z-10 flex h-6 w-6 items-center justify-center rounded-full border shadow-sm transition-colors"
+      >
+        {isCollapsed ? (
+          <ChevronRight className="h-3 w-3" />
+        ) : (
+          <ChevronLeft className="h-3 w-3" />
+        )}
+      </button>
+
+      <nav className="flex flex-1 flex-col gap-1 p-2">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive =
             pathname === href ||
@@ -27,15 +81,17 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
+              title={isCollapsed ? label : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                isCollapsed && "justify-center px-2",
                 isActive
                   ? "bg-sidebar-primary text-sidebar-primary-foreground"
                   : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
               )}
             >
-              <Icon className="h-4 w-4" />
-              {label}
+              <Icon className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span>{label}</span>}
             </Link>
           );
         })}

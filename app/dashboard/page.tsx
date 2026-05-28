@@ -7,12 +7,12 @@ import {
   CheckCircle2,
   UserX,
   Building2,
-  UserPlus,
   Bot,
   MoreVertical,
   Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 function getInitials(name: string) {
   return name
@@ -98,37 +98,6 @@ const DEMO_EMPLOYEES = [
   },
 ];
 // ────────────────────────────────────────────────────────────────────────────
-
-const QUICK_ACTIONS = [
-  {
-    href: "/dashboard/employees/new",
-    label: "Add Employee",
-    icon: UserPlus,
-    iconBg: "bg-blue-50 dark:bg-blue-950",
-    iconColor: "text-blue-500",
-  },
-  {
-    href: "/dashboard/employees",
-    label: "View Employees",
-    icon: Users,
-    iconBg: "bg-green-50 dark:bg-green-950",
-    iconColor: "text-green-500",
-  },
-  {
-    href: "/dashboard/ai-assistant",
-    label: "AI Assistant",
-    icon: Bot,
-    iconBg: "bg-purple-50 dark:bg-purple-950",
-    iconColor: "text-purple-500",
-  },
-  {
-    href: "/dashboard/employees",
-    label: "Departments",
-    icon: Building2,
-    iconBg: "bg-orange-50 dark:bg-orange-950",
-    iconColor: "text-orange-500",
-  },
-];
 
 export default async function DashboardPage() {
   const user = await getUser();
@@ -293,16 +262,18 @@ export default async function DashboardPage() {
                     </td>
                     <td className="px-6 py-3">{emp.jobTitle}</td>
                     <td className="px-6 py-3">
-                      <span
-                        className={cn(
-                          "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                      <Badge
+                        variant={
+                          emp.status === "ACTIVE" ? "default" : "destructive"
+                        }
+                        className={
                           emp.status === "ACTIVE"
                             ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-                        )}
+                            : ""
+                        }
                       >
                         {emp.status === "ACTIVE" ? "Active" : "Inactive"}
-                      </span>
+                      </Badge>
                     </td>
                     <td className="text-muted-foreground px-6 py-3">
                       {formatDate(emp.joiningDate)}
@@ -322,28 +293,8 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-card rounded-xl border p-6 shadow-sm">
-          <h2 className="mb-4 font-semibold">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {QUICK_ACTIONS.map(
-              ({ href, label, icon: Icon, iconBg, iconColor }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  className="hover:bg-accent flex flex-col items-center gap-2 rounded-xl border p-4 text-sm font-medium transition-colors"
-                >
-                  <div className={cn("rounded-full p-2.5", iconBg)}>
-                    <Icon className={cn("h-5 w-5", iconColor)} />
-                  </div>
-                  {label}
-                </Link>
-              ),
-            )}
-          </div>
-        </div>
-
         {/* Footer */}
+        <div className="flex-1" />
         <p className="text-muted-foreground pb-2 text-center text-xs">
           © 2026 Mini AI HR. All rights reserved.
         </p>
