@@ -2,6 +2,7 @@
 
 import { handleError } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
+import { prisma } from "@/db/prisma";
 
 export const loginAction = async (email: string, password: string) => {
   try {
@@ -49,6 +50,13 @@ export const signUpAction = async (email: string, password: string) => {
 
     // Add user to "users" table
     // ... rest of your code
+
+    await prisma.user.create({
+      data: {
+        id: userId,
+        email,
+      },
+    });
 
     return {
       errorMessage: null,

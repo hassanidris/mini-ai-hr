@@ -1,0 +1,52 @@
+generator client {
+    provider = "prisma-client"
+    output   = "./generated"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum EmploymentType {
+    FULL_TIME
+    PART_TIME
+    CONTRACT
+    INTERN
+}
+
+enum EmployeeStatus {
+    ACTIVE
+    INACTIVE
+}
+
+model Employee {
+    id             String         @id @default(uuid())
+    name           String
+    email          String         @unique
+    jobTitle       String
+    department     String
+    employmentType EmploymentType
+    joiningDate    DateTime
+    status         EmployeeStatus @default(ACTIVE)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model User {
+    id    String @id @default(uuid())
+    email String @unique
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model ChatMessage {
+    id      String  @id @default(uuid())
+    userId  String
+    role    String
+    content String
+    action  String?
+
+    createdAt DateTime @default(now())
+}
