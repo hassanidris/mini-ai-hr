@@ -28,6 +28,7 @@ model Employee {
     employmentType EmploymentType
     joiningDate    DateTime
     status         EmployeeStatus @default(ACTIVE)
+    summary        String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
