@@ -6,6 +6,18 @@ Mini AI HR is a full-stack HR management system built with Next.js 16. It lets H
 
 ---
 
+## Screenshots
+
+| Dashboard                         | Employees List                          |
+| --------------------------------- | --------------------------------------- |
+| ![Dashboard](public/dashbord.png) | ![Employees](public/employees-list.png) |
+
+| Add Employee                             | AI Assistant                         |
+| ---------------------------------------- | ------------------------------------ |
+| ![Add Employee](public/add-employee.png) | ![AI Chat](public/ai-assistance.png) |
+
+---
+
 ## Features
 
 - **Authentication** — Secure sign-in/sign-up via Supabase Auth
