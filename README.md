@@ -34,7 +34,7 @@ Mini AI HR is a full-stack HR management system built with Next.js 16. It lets H
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 20.9+
 - A [Supabase](https://supabase.com) project (for Auth and the PostgreSQL database)
 - A [Google AI Studio](https://aistudio.google.com/apikey) API key (for Gemini features)
 
@@ -83,7 +83,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
-```
+```text
 mini-ai-hr/
 ├── actions/              # Server actions (employees.ts, users.ts)
 ├── app/

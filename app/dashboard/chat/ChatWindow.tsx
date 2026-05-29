@@ -221,6 +221,7 @@ export default function ChatWindow({
           <button
             onClick={() => sendMessage(input)}
             disabled={isLoading || !input.trim()}
+            aria-label="Send message"
             className="bg-primary text-primary-foreground rounded-xl px-4 py-2.5 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Send className="h-4 w-4" />

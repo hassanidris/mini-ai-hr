@@ -111,12 +111,14 @@ const HR_TOOLS: Tool[] = [
   },
 ];
 
-const SYSTEM_PROMPT = `You are a helpful AI HR assistant for a company's HR management system.
+function buildSystemPrompt(): string {
+  return `You are a helpful AI HR assistant for a company's HR management system.
 You help HR admins manage employee records conversationally.
 When asked to perform an action (create, update, deactivate), use the available tools.
 If you need to update or deactivate an employee by name, first call find_employee_by_name to get their ID, then perform the action.
 Always confirm completed actions clearly and concisely.
 Today's date is ${new Date().toISOString().split("T")[0]}.`;
+}
 
 export async function POST(request: Request) {
   try {
@@ -145,12 +147,12 @@ export async function POST(request: Request) {
     // Load the last 20 messages so Gemini has conversation context
     const history = await prisma.chatMessage.findMany({
       where: { userId: dbUser.id },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
       take: 20,
     });
 
     // Convert DB messages to the format Gemini expects for history
-    const geminiHistory = history.map((msg) => ({
+    const geminiHistory = history.reverse().map((msg) => ({
       role: msg.role === "user" ? ("user" as const) : ("model" as const),
       parts: [{ text: msg.content }],
     }));
@@ -160,7 +162,7 @@ export async function POST(request: Request) {
       history: geminiHistory,
       config: {
         tools: HR_TOOLS,
-        systemInstruction: SYSTEM_PROMPT,
+        systemInstruction: buildSystemPrompt(),
       },
     });
 
@@ -191,6 +193,7 @@ export async function POST(request: Request) {
 
           return {
             functionResponse: {
+              id: call.id,
               name: call.name!,
               response: output as Record<string, unknown>,
             },
@@ -202,7 +205,9 @@ export async function POST(request: Request) {
       result = await chat.sendMessage({ message: functionResponseParts });
     }
 
-    const reply = result.text ?? "";
+    const reply =
+      result.text ||
+      "Sorry, I couldn't complete that request — please try again or rephrase.";
 
     // Persist both sides of the exchange
     await prisma.chatMessage.createMany({
@@ -304,6 +309,12 @@ async function executeTool(
           employmentType: string;
           joiningDate: string;
         };
+        const parsedJoiningDate = new Date(data.joiningDate);
+        if (isNaN(parsedJoiningDate.getTime())) {
+          return {
+            error: `Invalid joiningDate: "${data.joiningDate}". Use YYYY-MM-DD format.`,
+          };
+        }
         const employee = await prisma.employee.create({
           data: {
             name: data.name.trim(),
@@ -315,7 +326,7 @@ async function executeTool(
               | "PART_TIME"
               | "CONTRACT"
               | "INTERN",
-            joiningDate: new Date(data.joiningDate),
+            joiningDate: parsedJoiningDate,
           },
         });
         return {

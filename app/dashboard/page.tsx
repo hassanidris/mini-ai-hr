@@ -41,57 +41,10 @@ function getAvatarColor(name: string) {
   return AVATAR_COLORS[name.charCodeAt(0) % AVATAR_COLORS.length];
 }
 
-// ── DEMO DATA — remove once real data is flowing ──────────────────────────
-const DEMO_STATS = { total: 12, active: 9, inactive: 3, departments: 4 };
-const DEMO_EMPLOYEES = [
-  {
-    id: "d1",
-    name: "John Doe",
-    department: "Engineering",
-    jobTitle: "Software Engineer",
-    status: EmployeeStatus.ACTIVE,
-    joiningDate: new Date("2026-06-01"),
-  },
-  {
-    id: "d2",
-    name: "Emma Johnson",
-    department: "Product",
-    jobTitle: "Product Manager",
-    status: EmployeeStatus.ACTIVE,
-    joiningDate: new Date("2026-05-28"),
-  },
-  {
-    id: "d3",
-    name: "Michael Brown",
-    department: "Design",
-    jobTitle: "UI/UX Designer",
-    status: EmployeeStatus.ACTIVE,
-    joiningDate: new Date("2026-05-25"),
-  },
-  {
-    id: "d4",
-    name: "Olivia Smith",
-    department: "Marketing",
-    jobTitle: "Marketing Specialist",
-    status: EmployeeStatus.INACTIVE,
-    joiningDate: new Date("2026-05-20"),
-  },
-  {
-    id: "d5",
-    name: "Liam Wilson",
-    department: "Sales",
-    jobTitle: "Sales Executive",
-    status: EmployeeStatus.ACTIVE,
-    joiningDate: new Date("2026-05-18"),
-  },
-];
-// ────────────────────────────────────────────────────────────────────────────
-
 export default async function DashboardPage() {
   const user = await getUser();
   if (!user) redirect("/");
 
-  let fetchFailed = false;
   let stats = { total: 0, active: 0, inactive: 0, departments: 0 };
   let recentEmployees: Array<{
     id: string;
@@ -130,39 +83,34 @@ export default async function DashboardPage() {
     };
     recentEmployees = recent;
   } catch (err) {
-    fetchFailed = true;
     console.error("[DashboardPage] failed to fetch employee data:", err);
   }
-
-  // Fallback to demo data only when the fetch itself failed
-  const displayStats = fetchFailed ? DEMO_STATS : stats;
-  const displayEmployees = fetchFailed ? DEMO_EMPLOYEES : recentEmployees;
 
   const statCards = [
     {
       label: "Total Employees",
-      value: displayStats.total,
+      value: stats.total,
       icon: Users,
       iconBg: "bg-blue-50 dark:bg-blue-950",
       iconColor: "text-blue-500",
     },
     {
       label: "Active Employees",
-      value: displayStats.active,
+      value: stats.active,
       icon: CheckCircle2,
       iconBg: "bg-green-50 dark:bg-green-950",
       iconColor: "text-green-500",
     },
     {
       label: "Inactive Employees",
-      value: displayStats.inactive,
+      value: stats.inactive,
       icon: UserX,
       iconBg: "bg-red-50 dark:bg-red-950",
       iconColor: "text-red-500",
     },
     {
       label: "Departments",
-      value: displayStats.departments,
+      value: stats.departments,
       icon: Building2,
       iconBg: "bg-purple-50 dark:bg-purple-950",
       iconColor: "text-purple-500",
@@ -223,7 +171,7 @@ export default async function DashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {displayEmployees.map((emp) => (
+              {recentEmployees.map((emp) => (
                 <tr
                   key={emp.id}
                   className="hover:bg-muted/50 border-b transition-colors last:border-b-0"
