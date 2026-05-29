@@ -1,5 +1,4 @@
 import { createServerClient } from "@supabase/ssr";
-import { CLIENT_PUBLIC_FILES_PATH } from "next/dist/shared/lib/constants";
 import { cookies } from "next/headers";
 
 export async function createClient() {

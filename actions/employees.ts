@@ -26,6 +26,7 @@ export type EmployeeRow = {
   employmentType: EmploymentType;
   joiningDate: Date;
   status: EmployeeStatus;
+  summary: string | null;
   createdAt: Date;
   updatedAt: Date;
 };

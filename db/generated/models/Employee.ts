@@ -33,6 +33,7 @@ export type EmployeeMinAggregateOutputType = {
   employmentType: $Enums.EmploymentType | null
   joiningDate: Date | null
   status: $Enums.EmployeeStatus | null
+  summary: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type EmployeeMaxAggregateOutputType = {
   employmentType: $Enums.EmploymentType | null
   joiningDate: Date | null
   status: $Enums.EmployeeStatus | null
+  summary: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,6 +61,7 @@ export type EmployeeCountAggregateOutputType = {
   employmentType: number
   joiningDate: number
   status: number
+  summary: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,6 +77,7 @@ export type EmployeeMinAggregateInputType = {
   employmentType?: true
   joiningDate?: true
   status?: true
+  summary?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -87,6 +91,7 @@ export type EmployeeMaxAggregateInputType = {
   employmentType?: true
   joiningDate?: true
   status?: true
+  summary?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +105,7 @@ export type EmployeeCountAggregateInputType = {
   employmentType?: true
   joiningDate?: true
   status?: true
+  summary?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -186,6 +192,7 @@ export type EmployeeGroupByOutputType = {
   employmentType: $Enums.EmploymentType
   joiningDate: Date
   status: $Enums.EmployeeStatus
+  summary: string | null
   createdAt: Date
   updatedAt: Date
   _count: EmployeeCountAggregateOutputType | null
@@ -220,6 +227,7 @@ export type EmployeeWhereInput = {
   employmentType?: Prisma.EnumEmploymentTypeFilter<"Employee"> | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeFilter<"Employee"> | Date | string
   status?: Prisma.EnumEmployeeStatusFilter<"Employee"> | $Enums.EmployeeStatus
+  summary?: Prisma.StringNullableFilter<"Employee"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
 }
@@ -233,6 +241,7 @@ export type EmployeeOrderByWithRelationInput = {
   employmentType?: Prisma.SortOrder
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  summary?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -249,6 +258,7 @@ export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
   employmentType?: Prisma.EnumEmploymentTypeFilter<"Employee"> | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeFilter<"Employee"> | Date | string
   status?: Prisma.EnumEmployeeStatusFilter<"Employee"> | $Enums.EmployeeStatus
+  summary?: Prisma.StringNullableFilter<"Employee"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
 }, "id" | "email">
@@ -262,6 +272,7 @@ export type EmployeeOrderByWithAggregationInput = {
   employmentType?: Prisma.SortOrder
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  summary?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EmployeeCountOrderByAggregateInput
@@ -281,6 +292,7 @@ export type EmployeeScalarWhereWithAggregatesInput = {
   employmentType?: Prisma.EnumEmploymentTypeWithAggregatesFilter<"Employee"> | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
   status?: Prisma.EnumEmployeeStatusWithAggregatesFilter<"Employee"> | $Enums.EmployeeStatus
+  summary?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
 }
@@ -294,6 +306,7 @@ export type EmployeeCreateInput = {
   employmentType: $Enums.EmploymentType
   joiningDate: Date | string
   status?: $Enums.EmployeeStatus
+  summary?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -307,6 +320,7 @@ export type EmployeeUncheckedCreateInput = {
   employmentType: $Enums.EmploymentType
   joiningDate: Date | string
   status?: $Enums.EmployeeStatus
+  summary?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -320,6 +334,7 @@ export type EmployeeUpdateInput = {
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -333,6 +348,7 @@ export type EmployeeUncheckedUpdateInput = {
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -346,6 +362,7 @@ export type EmployeeCreateManyInput = {
   employmentType: $Enums.EmploymentType
   joiningDate: Date | string
   status?: $Enums.EmployeeStatus
+  summary?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -359,6 +376,7 @@ export type EmployeeUpdateManyMutationInput = {
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -372,6 +390,7 @@ export type EmployeeUncheckedUpdateManyInput = {
   employmentType?: Prisma.EnumEmploymentTypeFieldUpdateOperationsInput | $Enums.EmploymentType
   joiningDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -385,6 +404,7 @@ export type EmployeeCountOrderByAggregateInput = {
   employmentType?: Prisma.SortOrder
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  summary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -398,6 +418,7 @@ export type EmployeeMaxOrderByAggregateInput = {
   employmentType?: Prisma.SortOrder
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  summary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -411,6 +432,7 @@ export type EmployeeMinOrderByAggregateInput = {
   employmentType?: Prisma.SortOrder
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  summary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -431,6 +453,10 @@ export type EnumEmployeeStatusFieldUpdateOperationsInput = {
   set?: $Enums.EmployeeStatus
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 
 
 export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -442,6 +468,7 @@ export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   employmentType?: boolean
   joiningDate?: boolean
   status?: boolean
+  summary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["employee"]>
@@ -455,6 +482,7 @@ export type EmployeeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   employmentType?: boolean
   joiningDate?: boolean
   status?: boolean
+  summary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["employee"]>
@@ -468,6 +496,7 @@ export type EmployeeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   employmentType?: boolean
   joiningDate?: boolean
   status?: boolean
+  summary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["employee"]>
@@ -481,11 +510,12 @@ export type EmployeeSelectScalar = {
   employmentType?: boolean
   joiningDate?: boolean
   status?: boolean
+  summary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "jobTitle" | "department" | "employmentType" | "joiningDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
+export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "jobTitle" | "department" | "employmentType" | "joiningDate" | "status" | "summary" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
 
 export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Employee"
@@ -499,6 +529,7 @@ export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     employmentType: $Enums.EmploymentType
     joiningDate: Date
     status: $Enums.EmployeeStatus
+    summary: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["employee"]>
@@ -932,6 +963,7 @@ export interface EmployeeFieldRefs {
   readonly employmentType: Prisma.FieldRef<"Employee", 'EmploymentType'>
   readonly joiningDate: Prisma.FieldRef<"Employee", 'DateTime'>
   readonly status: Prisma.FieldRef<"Employee", 'EmployeeStatus'>
+  readonly summary: Prisma.FieldRef<"Employee", 'String'>
   readonly createdAt: Prisma.FieldRef<"Employee", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Employee", 'DateTime'>
 }
